@@ -5,7 +5,6 @@ from selenium.webdriver.common.keys import Keys
 import re
 import pandas as pd
 
-
 # class
 class LinkedInProfile:
     def __init__(self, user_name, highlightset, job_title, company, school):
@@ -42,8 +41,10 @@ file_name = 'results_file.csv'
 email_input = input("Pleae enter your LinkedIn login email: ")
 password_input = input("Please enter LinkIn login password: ")
 
-DRIVER_PATH = '/Users/njjones14/PycharmProjects/Slater_Technology/chromedriver'
+DRIVER_PATH = input("Enter Driver Path: ") #/Users/njjones14/PycharmProjects/Slater_Technology/chromedriver
 driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+
+Output_path = input("Enter Output Path: ")  #/Users/njjones14/PycharmProjects/Slater_Technology/step_1.csv
 
 # TODO: make sure that empty primary contacts are removed, and that there is no downstream consequences dor happynest_comparables.py
 # Generate URLs
@@ -80,8 +81,6 @@ for contact in contact_list:
 print(contact_dict)
 
 # At this point we have a dictionary with names as keys and urls as values
-DRIVER_PATH = '/Users/njjones14/PycharmProjects/Slater_Technology/chromedriver'
-driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 driver.get('https://www.linkedin.com')
 
 # Username
@@ -156,4 +155,4 @@ output_df = pd.concat(
 print(output_df)
 
 # compression_opts = dict(method='zip', archive_name='step_1.csv')
-output_df.to_csv(path_or_buf="/Users/njjones14/PycharmProjects/Slater_Technology/step_1.csv")
+output_df.to_csv(path_or_buf=Output_path)
