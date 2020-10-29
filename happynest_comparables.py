@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
-
 class Deal:
     """For each deal that investor is apart of, cross-referenceing from deals output"""
 
@@ -23,10 +21,10 @@ with open('step_1.csv') as csvfile:
     input_df = pd.read_csv(csvfile, header=0)
     print(input_df)
 
-input_investors = input("Enter filename (including extension) of investors downloadable: ") #"Happynest_Comparables_Investors.xlsx"
+input_investors = input("Enter filename (including extension) of investors downloadable: ") #Happynest_Comparables_Investors.xlsx
 investors = pd.read_excel(input_investors)
 
-input_deals = input("Enter filename (including extension) of investors downloadable: ") #"Happynest_Deals.xlsx"
+input_deals = input("Enter filename (including extension) of deals downloadable: ") #Happynest_Deals.xlsx
 deals = pd.read_excel(input_deals)
 deals["Deal Size"] = deals["Deal Size"].fillna(0)
 
@@ -52,8 +50,6 @@ relevance_df["Investments in the last 5 years"].fillna(0.0)
 relevance_df["List of deals"] = np.empty((len(relevance_df), 0)).tolist()
 relevance_df = relevance_df.fillna("")
 relevance_df["Rank Score"] = relevance_df.loc[:, 'Rank Score'] = 0
-
-print(relevance_df)
 
 # create list of deals that investor is involved in
 for idx1, investor in relevance_df.iterrows():
@@ -103,33 +99,42 @@ investment_size_weight = int(input("Enter multipler/weight for investment size a
 
 def rank(input_row):  # Input relevancy df from happynest_comparables.py
     # Investment Size
-    rank_score_counter = 0
+    rank_score_counter = float(0)
+    keyword_counter = float(0)
     list_of_deals = input_row["List of deals"]
     if len(list_of_deals) != 0:
         for i in range(len(list_of_deals)):
             current_deal = list_of_deals[i]
+            for n in str(deal.Keywords).split(", "):
+                if n in Keywords_list:
+                    keyword_counter += float(1)
             if Investment_Size_min <= float(current_deal.deal_size) <= Investment_Size_max:
                 rank_score_counter += investment_size_weight
+        rank_score_counter = float(rank_score_counter/len(list_of_deals))
+        rank_score_counter += keyword_counter
     # Geography, divides number of cities by total
     if input_row["Preferred Geography"] is not None or "":
         input_row["Preferred Geography"] = str(input_row["Preferred Geography"]).split(", ")
-        counter = 0
+        counter = float(0)
         for city in input_row["Preferred Geography"]:
             if city.lower() in us_cities:
                 counter += 1
         final_geo = counter / len(input_row["Preferred Geography"])
-        rank_score_counter += final_geo
+        rank_score_counter += float(final_geo)
 
     # Is Industry?
-    if len(list_of_deals) is not None:
+    if len(list_of_deals) != 0:
+        industry_counter = float(0)
         for j in range(len(list_of_deals)):
             current_object = list_of_deals[j]
             if current_object.Primary_Industry_Sector in Primary_Industry_Sector_list:
-                rank_score_counter += 1
+                industry_counter += float(1)
+        final_industry = float(industry_counter/len(list_of_deals))
+        rank_score_counter += final_industry
 
     # Target Primary Investor Type?
     if input_row["Primary Investor Type"] in Primary_Investor_Type_list:
-        rank_score_counter += 1
+        rank_score_counter += float(1)
 
     # Investments
     if input_row["Investments in the last 5 years"] is not None:
