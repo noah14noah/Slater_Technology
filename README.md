@@ -3,22 +3,13 @@ Webscraping tool to return relevant investors and LinkedIN profile data for prim
 
 Dependencies: 
 
-selenium_webdriver_load_page.py: 
-
-    from time import sleep
-    from selenium import webdriver
-    from parsel import Selector
-    from selenium.webdriver.common.keys import Keys
-    import re
-    import pandas as pd
-
-happynest_comparables.py: 
-
-    import pandas as pd  
-    import numpy as np  
-    import pickle
-
-
+    numpy==1.19.2
+    pandas==1.1.2
+    pandasgui==0.2.3.5
+    selenium==3.141.0
+    parsel==1.6.0
+    regex==2020.7.14
+    
 Installation Instructions: 
 1. Make sure Python3 is downloaded on computer
 2. Import Deals and Investors list for relevant comparables list (ie. HappyNest) 
