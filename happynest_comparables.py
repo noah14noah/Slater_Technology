@@ -1,9 +1,6 @@
 import pandas as pd
 import numpy as np
-import pickle
-import json
-import csv
-import openpyxl
+
 
 
 class Deal:
@@ -21,9 +18,6 @@ class Deal:
         self.Company_Website = Company_Website
         self.deal_size = deal_size
 
-
-with open("deal_object", "wb") as f:
-    pickle.dump(Deal, f)
 
 with open('step_1.csv') as csvfile:
     input_df = pd.read_csv(csvfile, header=0)
@@ -45,6 +39,8 @@ relevance_df["Description"] = investors["Description"]
 relevance_df["Primary Investor Type"] = investors["Primary Investor Type"]
 relevance_df["Primary Contact"] = investors["Primary Contact"]
 relevance_df["Primary Contact Title"] = investors["Primary Contact Title"]
+relevance_df["Primary Contact Email"] = investors["Primary Contact Email"]
+relevance_df["Primary Contact Phone"] = investors["Primary Contact Phone"]
 relevance_df["Investments"] = investors["Investments"]
 relevance_df["Investments"].fillna(0.0)
 relevance_df["Investments"].replace("", 0.0)
@@ -130,6 +126,7 @@ def rank(input_row):  # Input relevancy df from happynest_comparables.py
             current_object = list_of_deals[j]
             if current_object.Primary_Industry_Sector in Primary_Industry_Sector_list:
                 rank_score_counter += 1
+
     # Target Primary Investor Type?
     if input_row["Primary Investor Type"] in Primary_Investor_Type_list:
         rank_score_counter += 1
@@ -167,11 +164,11 @@ relevance_df = relevance_df.drop(labels="key_0", axis=1)
 relevance_df = relevance_df.drop(labels="Name", axis=1)
 relevance_df = relevance_df.drop(labels="Unnamed: 0", axis=1)
 
-cols = ["Investor Name","Description", "Primary Investor Type", "Primary Contact", "Primary Contact Title","Investments",
+cols = ["Investor Name","Description", "Primary Investor Type", "Primary Contact", "Primary Contact Title",
+        "Primary Contact Email","Primary Contact Phone",  "Investments",
        "Investments in the last 5 years", "Preferred Geography","# of deals", "List of deals","Rank Score", "Profile"]
 
 relevance_df = relevance_df[cols]
 
 final_sorted = relevance_df.sort_values("Rank Score", ascending=False)
 final_sorted.to_excel("Ranked_LinkedIn_Output.xlsx")
-
