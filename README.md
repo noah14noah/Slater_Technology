@@ -2,6 +2,7 @@
 
 Webscraping tool to return relevant investors and LinkedIN profile data for primary contacts at investment firms. Takes Pitchbook Excel data. 
 
+
 Dependencies: 
 
     numpy==1.19.2
