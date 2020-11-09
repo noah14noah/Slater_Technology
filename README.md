@@ -1,7 +1,6 @@
 # Slater_Technology_Lead_Generator
 
-Webscraping tool to return relevant investors and LinkedIN profile data for primary contacts at investment firms. Takes Pitchbook Excel data. 
-
+Selenium-based webscraping tool to return relevant investors and LinkedIN profile data for primary contacts at investment firms. Takes Pitchbook Excel data. 
 
 Dependencies: 
 
